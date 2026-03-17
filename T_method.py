@@ -72,7 +72,7 @@ class LayeredStructure:
             p_xi_TE = p_s/p_TE
             return  np.cos(theta)**2 *p_xi_TM + p_xi_TE
         p_norm = denom_func(0)/2
-        integral, eps = quad_vec(lambda theta: denom_func(theta)*np.sin(theta), 0, np.pi/2*0.99, epsrel=1e-3)
+        integral, eps = quad_vec(lambda theta: denom_func(theta)*np.sin(theta), 0, np.pi/2*0.99, epsrel=1e-3, limit=200)
         return 4*p_norm/integral # выводит массив directivity для каждой df
     
     def radiation_pattern(self, phi, theta, df, mode='normalized'):
