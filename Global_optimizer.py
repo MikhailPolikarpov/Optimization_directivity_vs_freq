@@ -121,7 +121,7 @@ class StateTracker:
         self.convergence_history.append(intermediate_result.convergence)
         self.target_f_history.append(current_target_f)
         print(f"Iteration {self.iteration}: best target_f = {current_target_f:.4f}")
-        print(f"🔹 Сходимость: {intermediate_result.convergence:.4f}")
+        print(f"Convergence: {intermediate_result.convergence:.4f}")
         
 
 
