@@ -30,6 +30,7 @@ def my_json_load(path):
 
 @dataclass 
 class OptimizationParameters:
+    n = 5 # кол-во слоев
     ndf: int = 150 # кол-во точек по df
     min_df: float = -50 # левая граница по df в процентах   
     max_df: float = 50  # правая граница по df в процентах
@@ -37,15 +38,41 @@ class OptimizationParameters:
     sigma_thres: float = 18.0 # целевая КНД в дБ
     sigma_k: float = 3.0 # крутизна функции штрафа и сигмоиды
     penalty_c: float = 0.1 # коэффициент штрафа
+    eps = 1e-3 # точность для интегрирования в функции directivity
+    limit = 200 # предел для интегрирования в функции directivity
     bounds_alpha: list = field(default_factory=lambda: [(0,  20.0), (-20.0, 0), (0, 20.0), (-20.0, 0), (0, 20.0)]) # границы для alpha
-    bounds_beta: list = field(default_factory=lambda: [(0.1,  7.0), (0.1, 1.0), (0.1, 1.0), (0.1, 1.0), (0.1, 1.0)])  # границы для beta
+    bounds_beta: list = field(default_factory=lambda: [(0.1,  6.0), (0.1, 1.0), (0.1, 1.0), (0.1, 1.0), (0.1, 1.0)])  # границы для beta
+    start_alpha: list = field(default_factory=lambda: [10.0, -10.0, 10.0, -10.0, 10.0]) # начальные значения для alpha
+    start_beta: list = field(default_factory=lambda: [1.0, 0.5, 0.5, 0.5, 0.5]) # начальные значения для beta
 
-    def __post_init__(self):
-        self.bounds = self.bounds_alpha + self.bounds_beta
-        self.df = np.linspace(self.min_df/100, self.max_df/100, self.ndf) # относительный сдвиг частоты
-        self.segment_points = int(self.ndf * self.segment_width_percent / (self.max_df - self.min_df)) # кол-во точек в целевом сегменте
-        self.df_center_segment = np.linspace(-self.segment_width_percent/200, self.segment_width_percent/200, self.segment_points)# частотная сетка для центрального целевого сегмента
+    @property
+    def bounds(self):
+        return self.bounds_alpha + self.bounds_beta
     
+    @property
+    def start_params(self):
+        return self.start_alpha + self.start_beta
+    
+    @property
+    def k(self):
+        return np.array([b[1] - b[0] for b in self.bounds])
+    
+    @property
+    def b(self):
+        return np.array([b[0] for b in self.bounds])
+    
+    @property
+    def df(self):
+        return np.linspace(self.min_df/100, self.max_df/100, self.ndf)
+    
+    @property
+    def segment_points(self):
+        return int(self.ndf * self.segment_width_percent / (self.max_df - self.min_df))
+    
+    @property
+    def df_center_segment(self):
+        return np.linspace(-self.segment_width_percent/200, self.segment_width_percent/200, self.segment_points)
+
     @property
     def sigma_penalty(self):
         def sigma(x):
@@ -76,21 +103,24 @@ class OptimizationParameters:
         ax.axhline(1, color='gray', linestyle='--', alpha=0.5)
         plt.show()
 
-    def objective_function_single_segment(self, params):
-        n = len(params) // 2
-        alpha = np.array(params[:n])
-        beta = np.array(params[n:])
+    def objective_function_single_segment(self, norm_params):        
+        n = len(norm_params) // 2
+        param = np.array(norm_params)*self.k + self.b
+        alpha = param[:n]
+        beta = param[n:]
         structure = LayeredStructure(alpha, beta=beta)
-        directivity = 10*np.log10(structure.directivity(self.df_center_segment))
+        directivity = 10*np.log10(structure.directivity(self.df_center_segment, eps=self.eps, limit=self.limit))
         target_f = np.sum(self.sigma_penalty(directivity))
         return -target_f  # Для поиска максимума находим минимум отрицательной целевой функции
     
-    def objective_function_multisegments(self, params):
-        n = len(params) // 2
-        alpha = np.array(params[:n])
-        beta = np.array(params[n:])
+
+    def objective_function_multisegments(self, norm_params):
+        n = len(norm_params) // 2
+        param = np.array(norm_params)*self.k + self.b
+        alpha = param[:n]
+        beta = param[n:]
         structure = LayeredStructure(alpha, beta=beta)
-        directivity = 10*np.log10(structure.directivity(self.df))
+        directivity = 10*np.log10(structure.directivity(self.df, eps=self.eps, limit=self.limit))
         target_f = -np.inf
         for i in range(0, self.ndf-self.segment_points):
             segment_i = directivity[i:i+self.segment_points]
@@ -122,6 +152,18 @@ class StateTracker:
         self.target_f_history.append(current_target_f)
         print(f"Iteration {self.iteration}: best target_f = {current_target_f:.4f}")
         print(f"Convergence: {intermediate_result.convergence:.4f}")
+
+    def callback_local(self, intermediate_result):
+        self.iteration += 1
+        resdict = intermediate_result.copy()
+        current_target_f = -resdict['fun']
+        x = resdict['x']
+        n = len(x) // 2
+        alpha = list(x[:n])
+        beta = list(x[n:])
+        self.alpha_history.append(alpha)
+        self.beta_history.append(beta)
+        print(f"Iteration {self.iteration}, target_f = {current_target_f:.4f}")
         
 
 
