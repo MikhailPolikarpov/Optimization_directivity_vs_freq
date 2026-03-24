@@ -30,20 +30,30 @@ def my_json_load(path):
 
 @dataclass 
 class OptimizationParameters:
-    n = 5 # кол-во слоев
-    ndf: int = 150 # кол-во точек по df
-    min_df: float = -50 # левая граница по df в процентах   
-    max_df: float = 50  # правая граница по df в процентах
+    _n: int = 5 # кол-во слоев
     segment_width_percent: float = 25.0 # целевая ширина по df в процентах
+    segment_points: int = 35 # кол-во точек в целевом сегменте
     sigma_thres: float = 18.0 # целевая КНД в дБ
     sigma_k: float = 3.0 # крутизна функции штрафа и сигмоиды
     penalty_c: float = 0.1 # коэффициент штрафа
     eps = 1e-3 # точность для интегрирования в функции directivity
     limit = 200 # предел для интегрирования в функции directivity
-    bounds_alpha: list = field(default_factory=lambda: [(0,  20.0), (-20.0, 0), (0, 20.0), (-20.0, 0), (0, 20.0)]) # границы для alpha
-    bounds_beta: list = field(default_factory=lambda: [(0.1,  6.0), (0.1, 1.0), (0.1, 1.0), (0.1, 1.0), (0.1, 1.0)])  # границы для beta
-    start_alpha: list = field(default_factory=lambda: [10.0, -10.0, 10.0, -10.0, 10.0]) # начальные значения для alpha
-    start_beta: list = field(default_factory=lambda: [1.0, 0.5, 0.5, 0.5, 0.5]) # начальные значения для beta
+    bounds_alpha: list = field(default_factory=lambda: [(0,  20.0)]*5) # границы для alpha
+    bounds_beta: list = field(default_factory=lambda: [(0.1,  3.0)]*5)  # границы для beta
+    start_alpha: list = field(default_factory=lambda: [10.0]*5) # начальные значения для alpha
+    start_beta: list = field(default_factory=lambda: [1.0]*5) # начальные значения для beta
+
+    @property
+    def n(self):
+        return self._n
+    
+    @n.setter
+    def n(self, value):
+        self._n = value
+        self.bounds_alpha = [(0,  20.0)]*value
+        self.bounds_beta = [(0.1,  3.0)]*value
+        self.start_alpha = [10.0]*value
+        self.start_beta = [1.0]*value
 
     @property
     def bounds(self):
@@ -60,14 +70,6 @@ class OptimizationParameters:
     @property
     def b(self):
         return np.array([b[0] for b in self.bounds])
-    
-    @property
-    def df(self):
-        return np.linspace(self.min_df/100, self.max_df/100, self.ndf)
-    
-    @property
-    def segment_points(self):
-        return int(self.ndf * self.segment_width_percent / (self.max_df - self.min_df))
     
     @property
     def df_center_segment(self):
@@ -113,23 +115,6 @@ class OptimizationParameters:
         target_f = np.sum(self.sigma_penalty(directivity))
         return -target_f  # Для поиска максимума находим минимум отрицательной целевой функции
     
-
-    def objective_function_multisegments(self, norm_params):
-        n = len(norm_params) // 2
-        param = np.array(norm_params)*self.k + self.b
-        alpha = param[:n]
-        beta = param[n:]
-        structure = LayeredStructure(alpha, beta=beta)
-        directivity = 10*np.log10(structure.directivity(self.df, eps=self.eps, limit=self.limit))
-        target_f = -np.inf
-        for i in range(0, self.ndf-self.segment_points):
-            segment_i = directivity[i:i+self.segment_points]
-            target_f_i = np.sum(self.sigma_penalty(segment_i))
-            if target_f_i > target_f:
-                target_f = target_f_i
-        return -target_f  # Для поиска максимума находим минимум отрицательной целевой функции
-    
-
 
 class StateTracker:
     def __init__(self):
@@ -180,25 +165,21 @@ class DifferentialEvolutionParameters:
 
 class DifferentialEvolutionOptimizer:
 
-    def __init__(self, optimization_params: OptimizationParameters, de_params: DifferentialEvolutionParameters, result_path=None, detailed=False, is_single_segment=True):
-        self.optimization_params = optimization_params
+    def __init__(self, optp: OptimizationParameters, de_params: DifferentialEvolutionParameters, result_path=None, detailed=False):
+        self.optp = optp
         self.de_params = de_params
         if result_path is not None:
             self.result_path = Path(result_path)
         self.state_tracker = StateTracker()
         self.optimization_data = {}
         self.detailed = detailed
-        self.single_segment = is_single_segment
 
     def optimize(self):
-        if self.single_segment:
-            objective_func = self.optimization_params.objective_function_single_segment
-        else:
-            objective_func = self.optimization_params.objective_function_multisegments
+        objective_func = self.optp.objective_function_single_segment
         time_start = time.time()
         res = differential_evolution(
             objective_func,
-            bounds=self.optimization_params.bounds,
+            bounds=[(0, 1.0)]*(2*self.optp.n),
             strategy=self.de_params.strategy,
             popsize=self.de_params.popsize,
             maxiter=self.de_params.maxiter,
@@ -208,7 +189,8 @@ class DifferentialEvolutionOptimizer:
             seed=self.de_params.seed,
             callback=self.state_tracker.callback
         )
-        best_params = res.x
+        best_normalized_params = res.x
+        best_params = best_normalized_params*self.optp.k + self.optp.b
         best_score = -res.fun
         time_end = time.time()
         simulation_time = time_end - time_start
@@ -216,11 +198,11 @@ class DifferentialEvolutionOptimizer:
         print("Best value:", best_score)
         print("Success:", res.success)
         print("Message:", res.message)
-        print("Best score (sum of sigmoids):", best_score/self.optimization_params.ndf*(self.optimization_params.max_df - self.optimization_params.min_df))
+        print("Best score (sum of sigmoids):", best_score/self.optp.segment_points*(self.optp.segment_width_percent))
         print("Best params:", best_params)
 
         if self.result_path is not None:
-            n = len(best_params) // 2
+            n = self.optp.n
             best_alpha = list(best_params[:n])
             best_beta = list(best_params[n:])
             success = res.success
@@ -234,17 +216,13 @@ class DifferentialEvolutionOptimizer:
             self.optimization_data["success"] = success
             self.optimization_data["message"] = message
             self.optimization_data["simulation_time"] = simulation_time_str
-            self.optimization_data["ndf"] = self.optimization_params.ndf
-            self.optimization_data["min_df"] = self.optimization_params.min_df
-            self.optimization_data["max_df"] = self.optimization_params.max_df
-            self.optimization_data["segment_width_percent"] = self.optimization_params.segment_width_percent
-            self.optimization_data["segment_points"] = self.optimization_params.segment_points
-            self.optimization_data["sigma_thres"] = self.optimization_params.sigma_thres
-            self.optimization_data["sigma_k"] = self.optimization_params.sigma_k
-            self.optimization_data["penalty_c"] = self.optimization_params.penalty_c
-            self.optimization_data["bounds_alpha"] = self.optimization_params.bounds_alpha
-            self.optimization_data["bounds_beta"] = self.optimization_params.bounds_beta
-            self.optimization_data["is_single_segment"] = self.single_segment
+            self.optimization_data["segment_width_percent"] = self.optp.segment_width_percent
+            self.optimization_data["segment_points"] = self.optp.segment_points
+            self.optimization_data["sigma_thres"] = self.optp.sigma_thres
+            self.optimization_data["sigma_k"] = self.optp.sigma_k
+            self.optimization_data["penalty_c"] = self.optp.penalty_c
+            self.optimization_data["bounds_alpha"] = self.optp.bounds_alpha
+            self.optimization_data["bounds_beta"] = self.optp.bounds_beta
             self.optimization_data["de_strategy"] = self.de_params.strategy
             self.optimization_data["de_maxiter"] = self.de_params.maxiter
             self.optimization_data["de_popsize"] = self.de_params.popsize

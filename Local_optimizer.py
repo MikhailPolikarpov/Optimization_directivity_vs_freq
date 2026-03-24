@@ -98,7 +98,7 @@ class LocalOptimizer:
         print("Best score (sum of sigmoids):", best_score/self.optp.ndf*(self.optp.max_df - self.optp.min_df))
         print("Best params:", best_params)
 
-        n = len(best_params) // 2
+        n = self.optp.n
         best_params = best_params*self.optp.k + self.optp.b  # Denormalize the parameters
         best_alpha = list(best_params[:n])
         best_beta = list(best_params[n:])
