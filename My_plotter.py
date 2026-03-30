@@ -18,6 +18,9 @@ class Plotter:
     def __init__(self, ax, style: Style):
         self.ax = ax
         self.style = style
+        self.p = None
+        self.cmap = None
+        self.norm = None
     def set_xlabel(self, xlabel):
         self.ax.set_xlabel(xlabel, fontsize=self.style.ax_label_size)
         return self
