@@ -1,7 +1,7 @@
 
 
 import numpy as np
-from scipy.integrate import quad_vec
+from scipy.integrate import quad_vec, dblquad
 
 MU_0 = 4e-7 * np.pi
 EPS_0 = 8.8541878188e-12
@@ -74,6 +74,42 @@ class LayeredStructure:
         p_norm = denom_func(0)/2
         integral, eps = quad_vec(lambda theta: denom_func(theta)*np.sin(theta), 0, np.pi/2*0.99, epsrel=eps, limit=limit)
         return 4*p_norm/integral # выводит массив directivity для каждой df
+    
+    def directivity_two_sources(self, df_arr, eps=1e-3): # df - относительная расстройка (np.array) 
+        def denom_func(phi, theta, df):
+            df = np.array([df])
+            T_shift = FreeSpaceLayer(np.pi/2, np.array([theta]), df).Tmatrix()
+            vec_0 = np.array([0,1])[None, None, None, :,None]
+            p_s = ((T_shift@vec_0).transpose(0,1,4,3,2)[0, 0, 0, 0, 0])**2
+            vec_TM = np.array([0,1])[None, None, None, :,None]
+            vec_TE = np.array([0,1])[None, None, None, :,None]
+            for i in range(self.N):
+                vec_TM = FreeSpaceLayer(self.beta[i], np.array([theta]), df).Tmatrix()@vec_TM
+                vec_TM = ImpSheetLayer(self.alpha[i], np.array([theta]), df, 'TM', self.dispersion[i]).Tmatrix()@vec_TM
+                vec_TE = FreeSpaceLayer(self.beta[i], np.array([theta]), df).Tmatrix()@vec_TE
+                vec_TE = ImpSheetLayer(self.alpha[i], np.array([theta]), df, 'TE', self.dispersion[i]).Tmatrix()@vec_TE
+            vec_TM = vec_TM.transpose(0,1,4,2,3)[0, 0, 0, 0, :]
+            vec_TE = vec_TE.transpose(0,1,4,2,3)[0, 0, 0, 0, :]
+            p_TM = (vec_TM[0]**2 + vec_TM[1]**2)
+            p_TE = (vec_TE[0]**2 + vec_TE[1]**2)
+            p_xi_TM = p_s/p_TM
+            p_xi_TE = p_s/p_TE
+            return  np.cos(theta)**2 *p_xi_TM * np.sin(phi)**2 + p_xi_TE * np.cos(phi)**2
+        integral = []
+        p_norm_arr = []
+        for df in df_arr:
+            p_norm = denom_func(0, 0, df)/2
+            p_norm_arr.append(p_norm)
+            integral_res, eps = dblquad(
+                lambda phi, theta: denom_func(phi, theta, df)*np.sin(theta), 
+                0, np.pi/2*0.99,
+                lambda x: 0,                    # нижняя граница y
+                lambda x: np.pi*2*0.99,         # верхняя граница y
+                epsrel=eps)
+            integral.append(integral_res)
+        integral = np.array(integral)
+        p_norm_arr = np.array(p_norm_arr)
+        return 8 * np.pi * p_norm_arr/integral # выводит массив directivity для каждой df
     
     def radiation_pattern(self, phi, theta, df, mode='normalized'):
         def p_on_direction_array(phi, theta, df):
