@@ -1,0 +1,65 @@
+{
+    "parameters": [
+        {
+            "expr": "4e-7*pi",
+            "name": "mu_0",
+            "value": "1.25663706143592e-06"
+        },
+        {
+            "expr": "299792458.0",
+            "name": "c",
+            "value": "299792458.0"
+        },
+        {
+            "expr": "8.85418781762039e-12",
+            "name": "eps_0",
+            "value": "8.85418781762039e-12"
+        },
+        {
+            "expr": "7.994465546666666e-09",
+            "name": "ind_l",
+            "value": "7.994465546666666e-09"
+        },
+        {
+            "expr": "30",
+            "name": "d",
+            "value": "30"
+        },
+        {
+            "expr": "5e9",
+            "name": "f",
+            "value": "5e9"
+        },
+        {
+            "expr": "0.0599584916*1000",
+            "name": "lamb",
+            "value": "59.9584916"
+        },
+        {
+            "expr": "0.025554800250404443*1000",
+            "name": "l",
+            "value": "25.5548002504044"
+        },
+        {
+            "expr": "88.2",
+            "name": "scan_theta",
+            "value": "88.2"
+        },
+        {
+            "expr": "90",
+            "name": "scan_phi",
+            "value": "90"
+        },
+        {
+            "expr": "sqr(mu_0/eps_0)",
+            "name": "eta_0",
+            "value": "376.730313461771"
+        },
+        {
+            "expr": "d/1000*sqr(cos(scan_theta*pi/180)/eta_0)",
+            "name": "scale_for_amplitude",
+            "value": "2.73933525663738e-04"
+        }
+    ],
+    "version": 1
+}

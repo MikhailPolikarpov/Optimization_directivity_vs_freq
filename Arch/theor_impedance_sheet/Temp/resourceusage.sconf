@@ -1,0 +1,15 @@
+FeatureKeywords:string:modeler:variables:rebuild, modeler:variables:fastrebuild, DELETERESULTS:M0P0, mesh::background::boolean, meshloading:problem_class_only, mesh:param:assertfailed, mesh:workflow:LegacyInput_from_CST_Studio_2020, mesh:workflow:nru, mesh:workflow:boolean, mesh:workflow:boolean:advanced, mesh::attributes:rstepw, mesh:workflow:cad2srf, mesh:workflow:srf2vol, mesh:lib:blsurf, acceleration:cpu:8, acceleration:cpudevices:1, solver:hf:fd:task:1, monitor:scaling:peak, monitor:scaling:timeaverage, mesh:tet:adaptive:anisotropicedge, solver:hf:fd:meshenhancement, la:iterative, la:precond:pdss7, DenseInitDangerousDim, la:parallel_excitation:block, solver:hf:fd:lowweightedmodes, background:normal, boundary:expanded open:zmax, boundary:expanded open:zmin, boundary:open:ConvPML, boundary:open:isolated, boundary:unit cell:xmax, boundary:unit cell:xmin, boundary:unit cell:ymax, boundary:unit cell:ymin, lineqssolver:setting:acceleratedrestart, material:SI:generalized model, material:SI:ohmic sheet, mesh:tet, mesh:tet:autocurvature, mesh:tet:curved, mesh:tet:curved:3, monitor:power:1d, solver:hf:fd, solver:hf:fd:generalpurpose:tet, solver:hf:fd:order:2, solver:hf:fd:portloss, source:floquet, units:Capacitance:pF, units:Conductance:S, units:Current:A, units:Frequency:GHz, units:Inductance:nH, units:Length:mm, units:Resistance:Ohm, units:Temperature:K, units:Time:ns, units:Voltage:V, solver:pp:sparameter:sensitivityanalysis, solver:pp:sparameter:basicbranch, solver:pp:sparameter:unnorm, solver:pp:sparameter:updatebalance, lineqssolver:setting:auto, lineqssolver:setting:treecotree, mesh:tet:adaptive, solver:hf:fd:task:15, solver:hf:fd:sweep:convchecktask, DELETERESULTS:M000, modeler:load:fastloading, DELETERESULTS:0000, material:SI:surface impedance:tabulated, solver:hf:fd:meshspawning, visualization:mesh_view:default_engine, visualization:mesh_view:legacy_engine, boundary:electric:zmin, monitor:3D:freq, monitor:e-field, visualization:field_plot:default_engine, probe:efield, solver:pp:sparameter:calcyz, solver:pp:sparameter:arbranch, solver:pp:combine:fd, solver:hf:fd:task:8, solver:hf:fd:task:7, modeler:variables:fullrebuild, SMatrix:InconsistentPMI, boundary:open:zmax, plotting:1d:export_bitmap, plotting:1d:cartesian
+LastWorkflowState:string:tetmesh:success
+solver_hf_tet_fd/InitialFreePhysicalInMB:int:7241
+solver_hf_tet_fd/MaxResidentSizeInMB:int:232
+solver_hf_tet_fd/MaxResidentSizeMiB:int:2217
+solver_hf_tet_fd/MinFreePhysicalInMB:int:7210
+solver_pp/InitialFreePhysicalInMB:int:7175
+solver_pp/MaxResidentSizeInMB:int:21
+solver_pp/MaxResidentSizeMiB:int:15
+solver_pp/MinFreePhysicalInMB:int:7175
+tetmesh/InitialFreePhysicalInMB:int:7347
+tetmesh/MaxResidentSizeInMB:int:54
+tetmesh/MaxResidentSizeMiB:int:41
+tetmesh/MinFreePhysicalInMB:int:7341
+---

@@ -1,0 +1,912 @@
+[18:43:17] -------- TetMesher Log --------
+[18:43:17] Build Number: 20220603; ID: 2022.5 Release from 2022-06-03 (change 981760); Date: 2022-06-03; ACIS version: 31.0.1, SPAresabs & SPAresnor: 1e-06, 1e-10; Problem class: High Frequency
+[18:43:18] - Reading information
+[18:43:18] - Building single body
+[18:43:18] Found 9 faces.
+[18:43:18] Choosing Advanced Boolean Loop...
+[18:43:18] Volume Attributes enabled
+[18:43:18] Attaching Volume Attributes
+[18:43:18] Sorted out 2 special bodies.
+[18:43:18] Processing 2 entities.
+[18:43:18] Queue Size: 1
+[18:43:18] Combining lossy sheet component1:solid1 and sheet component1:solid2 (Pair #1 out of 1)
+[18:43:18] Exiting Boolean Unite Module.
+[18:43:18] Added Compound Body (ID: 28, 38) to model
+[18:43:18] Added background material (ID: 1) to model
+[18:43:18] Added waveguide port wavequide port (Floquet) at Zmax (ID: 48) to model
+[18:43:18] - Storing model cells
+[18:43:18] - OK
+[18:43:18] [CADSurf] cad_add_face_multiple_periodicity_with_transformation_function
+[18:43:18] [CADSurf] fid1: 36, 37, fid2: 33, 40, 
+[18:43:18] [CADSurf] cad_add_face_multiple_periodicity_with_transformation_function
+[18:43:18] [CADSurf] fid1: 34, 41, fid2: 38, 35, 
+[18:43:18] [CADSurf] Warning: missing mesh size for UID 0
+[18:43:18] [CADSurf] - Mesh sizes: global mesh size near to model = 2.4982704000000000e+00
+              min requested = 2.4982704000000000e+00
+              max requested = 3.3310272000000003e+00
+[18:43:18] [CADSurf] MeshGems Version: MeshGems-Core 2.10-1
+[18:43:18] [CADSurf] === Begin: PreCAD-related parameters ===
+[18:43:18] [CADSurf] == CADSurf Parameters == 
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "use_precad",  "yes")
+[18:43:18] [CADSurf] Bounding box diagonal = 5.8684327112092276e+01
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "remove_nano_edges",  "0")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "discard_input_topology",  "0")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "process_3d_topology",  "0")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "discard_input_2d_topology",  "0")
+[18:43:18] [CADSurf] Default periodic tolerance (1e-4*diag) = 5.8684327112092276e-03
+[18:43:18] [CADSurf] Minimum periodic tolerance = 1.0000000000000001e-05
+[18:43:18] [CADSurf] Setting it to max( 1.0000000000000001e-05, 5.8684327112092276e-03 )
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "periodic_tolerance",  "0.0058684327112092276")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "remove_duplicate_cad_faces",  "0")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "remove_tiny_uv_edges",  "0")
+[18:43:18] [CADSurf] === End: PreCAD-related parameters ===
+[18:43:18] [CADSurf] ==
+[18:43:18] [CADSurf] == CADSurf Parameters == 
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "verbose",  "3")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "geometric_size_mode",  "local")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "physical_size_mode",  "local")
+[18:43:18] [CADSurf] 	 Max user size    = 3.3310272000000003e+00
+[18:43:18] [CADSurf] 	 Global size near = 2.4982704000000000e+00
+[18:43:18] [CADSurf] 	 Global size far  = 3.3310272000000003e+00
+[18:43:18] [CADSurf] 	 Upper size bound = 3.3310272000000003e+00
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "max_size",  "3.3310272000000003")
+[18:43:18] [CADSurf] 	Calculating min. mesh size for CADSurf...
+[18:43:18] [CADSurf] 	Diagonal of model + background box: 5.8684327112092276e+01
+[18:43:18] [CADSurf] 	Min. mesh size by diagonal (1e-3 x diagonal): 5.8684327112092274e-02
+[18:43:18] [CADSurf] 	Diagonal of model: 4.9528252703260883e+01
+[18:43:18] [CADSurf] 	Min. mesh size of model: 2.4982704000000000e+00
+[18:43:18] [CADSurf] 	Max. cell defined by user (near to model): 2.4982704000000000e+00
+[18:43:18] [CADSurf] 	Min. cell defined by user: 0.0000000000000000e+00
+[18:43:18] [CADSurf] 	Min. cell used for calculation: 2.4982704000000001e-02
+[18:43:18] [CADSurf] 	Note: min. mesh size by diagonal is too large, consider using (0.01 x max. cell = 2.4982704000000001e-02)
+[18:43:18] [CADSurf] Geometric refinement uses "min_size" setting.
+[18:43:18] [CADSurf] CADSurf "min_size" is set to min. cell: 2.4982704000000001e-02
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "min_size",  "0.024982704000000001")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "max_number_of_points_per_patch",  "0")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "element_generation",  "local")
+[18:43:18] [CADSurf] Setting Triangle as default element type
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "gradation",  "1.5")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "volume_gradation",  "2")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "patch_independent",  "0")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "remove_tiny_edges",  "0")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "optimise_tiny_edges",  "0")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "tiny_edge_respect_geometry",  "1")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "CheckWellDefined",  "8")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "anisotropic",  "1")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "anisotropic_ratio",  "5")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "correct_surface_intersections",  "1")
+[18:43:18] [CADSurf] meshgems_cadsurf_set_param(css, "intersection_processing_max_cost",  "15")
+[18:43:18] [CADSurf] ==
+[18:43:18] [CADSurf] Status: OK
+[18:43:18] [CADSurf] Number of intersecting edges: 0, total edge count: 184
+[18:43:18] [CADSurf] Number of intersecting faces: 0
+[18:43:18] [CADSurf] - Mesh stats: N=935, E=184, T=1912, Q=0
+[18:43:18] [CADSurf] Testing watertightness
+[18:43:18] [CADSurf] - OK
+[18:43:18] Creating volume mesh from surface mesh new workflow - begin
+[18:43:18] [SrfToVol] Volume meshing: 8 threads will be allocated
+[18:43:18] [SrfToVol] Surface to volume mesh: verifying input data
+[18:43:18] [SrfToVol] 
+[18:43:18] [SrfToVol] Generate volume mesh for 2 subdomains using 8 threads 
+ 
+[18:43:18] [SrfToVol] Setting mesher options for subdomain with id = 44
+gradation = 1.500000
+optimisation_level = standard
+min_size = -1
+max_size = 3.331027
+maxpropa = 2
+
+[18:43:18] [SrfToVol] Setting mesher options for subdomain with id = 45
+gradation = 1.500000
+optimisation_level = standard
+min_size = -1
+max_size = 3.331027
+maxpropa = 2
+
+[18:43:18] [SrfToVol] Start meshing subdomain with id = 44  numTriangles = 888 allUids = 1 2 3 4 5 8 9 10 13 14 15 16 17 21 22 23 24 25 26 31 33 35 36 39 41 42 
+[18:43:18] [SrfToVol] Start meshing subdomain with id = 45  numTriangles = 1344 allUids = 1 2 5 6 7 8 11 12 13 17 18 19 20 21 24 27 28 29 30 32 34 37 38 40 42 43 
+[18:43:18] [SrfToVol] Done meshing subdomain with id = 44  numTets = 3975
+[18:43:18] [SrfToVol] Done meshing subdomain with id = 45  numTets = 7153
+[18:43:18] [SrfToVol] Assembling volume mesh
+[18:43:18] [SrfToVol] Msg: Progress MG-Tetra session #1 : 10.00%
+ Int Data: 1 Real Data: 10
+[18:43:18] [SrfToVol] Msg: Progress MG-Tetra session #1 : 24.00%
+ Int Data: 1 Real Data: 24.5433
+[18:43:18] [SrfToVol] Msg: Progress MG-Tetra session #1 : 25.00%
+ Int Data: 1 Real Data: 25
+[18:43:18] [SrfToVol] Msg: Progress MG-Tetra session #1 : 26.00%
+ Int Data: 1 Real Data: 26.0096
+[18:43:18] [SrfToVol] Msg: Progress MG-Tetra session #1 : 27.00%
+ Int Data: 1 Real Data: 27.0192
+[18:43:18] [SrfToVol] Msg: Progress MG-Tetra session #1 : 28.00%
+ Int Data: 1 Real Data: 28.0048
+[18:43:18] [SrfToVol] Msg: Progress MG-Tetra session #1 : 29.00%
+ Int Data: 1 Real Data: 29.0144
+[18:43:18] [SrfToVol] Msg: Progress MG-Tetra session #1 : 30.00%
+ Int Data: 1 Real Data: 30
+[18:43:18] [SrfToVol] Msg:  %% WARNING max_size    3.331    is lower than the greatest edge    4.714
+ Int Data:  Real Data: 3.331034.71405
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #1 : 40.00%
+ Int Data: 1 Real Data: 40
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #1 : 44.00%
+ Int Data: 1 Real Data: 44
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #1 : 45.00%
+ Int Data: 1 Real Data: 45.1732
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #1 : 50.00%
+ Int Data: 1 Real Data: 50
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #1 : 52.00%
+ Int Data: 1 Real Data: 52
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #1 : 53.00%
+ Int Data: 1 Real Data: 53
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #1 : 56.00%
+ Int Data: 1 Real Data: 56
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #1 : 59.00%
+ Int Data: 1 Real Data: 59
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #1 : 60.00%
+ Int Data: 1 Real Data: 60
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #1 : 90.00%
+ Int Data: 1 Real Data: 90
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #1 : 100.00%
+ Int Data: 1 Real Data: 100
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 10.00%
+ Int Data: 2 Real Data: 10
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 23.00%
+ Int Data: 2 Real Data: 23.566
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 24.00%
+ Int Data: 2 Real Data: 24
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 25.00%
+ Int Data: 2 Real Data: 25
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 26.00%
+ Int Data: 2 Real Data: 26
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 27.00%
+ Int Data: 2 Real Data: 27
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 28.00%
+ Int Data: 2 Real Data: 28.0283
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 29.00%
+ Int Data: 2 Real Data: 29.0283
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 30.00%
+ Int Data: 2 Real Data: 30
+[18:43:19] [SrfToVol] Msg:  %% WARNING max_size    3.331    is lower than the greatest edge    4.467
+ Int Data:  Real Data: 3.331034.46732
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 40.00%
+ Int Data: 2 Real Data: 40
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 44.00%
+ Int Data: 2 Real Data: 44
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 45.00%
+ Int Data: 2 Real Data: 45.1732
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 50.00%
+ Int Data: 2 Real Data: 50
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 52.00%
+ Int Data: 2 Real Data: 52
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 53.00%
+ Int Data: 2 Real Data: 53
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 56.00%
+ Int Data: 2 Real Data: 56
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 59.00%
+ Int Data: 2 Real Data: 59
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 60.00%
+ Int Data: 2 Real Data: 60
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 90.00%
+ Int Data: 2 Real Data: 90
+[18:43:19] [SrfToVol] Msg: Progress MG-Tetra session #2 : 100.00%
+ Int Data: 2 Real Data: 100
+[18:43:19] [SrfToVol] Volume mesh generated - Status = ok
+[18:43:19] [SrfToVol] - Volume mesh stats: Nb nodes = 2270, Nb edges = 184, Nb surface elements = 1912, Nb tets = 11128
+[18:43:19] [SrfToVol] Creating mesh topology.
+[18:43:19] [SrfToVol] Using mesh topology.
+[18:43:19] [SrfToVol] Creating volume mesh from surface mesh - done
+[18:43:19] Using generalized mesh output routines.
+[18:43:19] Writing Bc file
+[18:43:19] Writing gex file for volume mesh
+[18:43:19] Running model geometry simplification... 
+[18:43:19] Model geometry simplification: 0 seconds
+[18:43:19] Writing topot.tet...
+[18:43:19] Done (topot.tet)
+[18:43:19] Writing moegeom.tet ...
+[18:43:19] Done (moegeom.tet) 
+[18:43:19] Mesh curving:
+[18:43:19]     available cores:   8
+[18:43:19]     number of threads: 8
+[18:43:19] Curving elements
+[18:43:19]  Curve elements, order = 3
+
+[18:43:19] 
+#### Feedback Report Begins ####
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 1
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 10.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 2
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 24.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 3
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 25.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 4
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 26.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 5
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 27.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 6
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 28.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 7
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 29.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 8
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 30.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 9
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1005343  %% WARNING max_size    3.331    is lower than the greatest edge    4.714
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 10
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 40.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 11
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 44.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 12
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 45.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 13
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 50.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 14
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 52.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 15
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 53.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 16
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 56.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 17
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 59.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 18
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 60.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 19
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 90.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 20
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #1 : 100.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 21
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 10.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 22
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 23.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 23
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 24.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 24
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 25.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 25
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 26.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 26
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 27.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 27
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 28.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 28
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 29.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 29
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 30.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 30
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1005343  %% WARNING max_size    3.331    is lower than the greatest edge    4.467
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 31
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 40.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 32
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 44.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 33
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 45.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 34
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 50.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 35
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 52.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 36
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 53.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 37
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 56.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 38
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 59.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 39
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 60.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 40
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 90.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+----------
+Display Group: UNKNOWN [NON-GRAPHICAL] 
+Problem: Issue 1
+Item: Item 41
+Item Label: UNKNOWN
+Descriptor Label: UNKNOWN
+Description: 1009002 Progress MG-Tetra session #2 : 100.00%
+
+Cure: 
+Integer Data: 
+Real Data: 
+Problems found during the creation of the item: 
+Incoherent Integer Data: No descriptors available.
+Incoherent Real Data: No descriptors available.
+Incoherent data, skipping the creation of graphical Items.
+----------
+
+#### Feedback Report Ends ####
+
+[18:43:19] Done

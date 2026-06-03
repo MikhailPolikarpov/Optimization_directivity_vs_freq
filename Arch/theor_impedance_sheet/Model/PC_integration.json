@@ -1,0 +1,59 @@
+{
+   "execution": {
+      "classname": "SMAPowerByEmagHPCFrame",
+      "libname": "SMAPowerByEmagUI"
+   },
+   "inputVariables": [
+      {
+         "name": "mu_0",
+         "type": "string",
+         "value": "4e-7*pi"
+      },
+      {
+         "name": "c",
+         "type": "float",
+         "value": 299792458.0
+      },
+      {
+         "name": "eps_0",
+         "type": "float",
+         "value": 8.85418781762039e-12
+      },
+      {
+         "name": "ind_l",
+         "type": "float",
+         "value": 7.994465546666666e-09
+      },
+      {
+         "name": "d",
+         "type": "float",
+         "value": 30.0
+      },
+      {
+         "name": "f",
+         "type": "float",
+         "value": 5000000000.0
+      },
+      {
+         "name": "lamb",
+         "type": "string",
+         "value": "0.0599584916*1000"
+      },
+      {
+         "name": "l",
+         "type": "string",
+         "value": "0.025554800250404443*1000"
+      },
+      {
+         "name": "scan_theta",
+         "type": "float",
+         "value": 88.2
+      },
+      {
+         "name": "scan_phi",
+         "type": "float",
+         "value": 90.0
+      }
+   ],
+   "outputVariables": []
+}

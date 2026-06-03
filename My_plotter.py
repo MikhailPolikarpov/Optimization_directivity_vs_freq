@@ -47,8 +47,10 @@ class Plotter:
         ls = linestyle if linestyle is not None else self.style.line_style
         self.ax.plot(x, y, label=label, linewidth=lw, linestyle=ls)
 
-    def multiple_plot(self, xi, yi, p_i, label=''):
-        self.ax.plot(xi, yi, label=label, color=self.cmap(self.norm(p_i)), linewidth=self.style.line_width, linestyle=self.style.line_style)
+    def multiple_plot(self, xi, yi, p_i, label='', linestyle=None, line_width=None):
+        lw = line_width if line_width is not None else self.style.line_width
+        ls = linestyle if linestyle is not None else self.style.line_style
+        self.ax.plot(xi, yi, label=label, color=self.cmap(self.norm(p_i)), linewidth=lw, linestyle=ls)
 
     def finalize(self):
         self.ax.tick_params(axis='both', which='major', labelsize=self.style.tick_label_size)

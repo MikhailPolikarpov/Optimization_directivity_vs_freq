@@ -1,0 +1,16 @@
+Combine Results Logfile 
+
+----------------------------------------------------------------------------------------
+Units settings: 
+
+  Dimensions: mm
+  Frequency:  GHz
+  Time:       ns
+
+----------------------------------------------------------------------------------------
+
+           Label                        Command Type Offset  Frequency   Specials
+----------------------------------------------------------------------------------------
+           horiz port:Zmax(1)[scale_for_amplitude,0]   FD PHASE        ALL 
+
+            vert port:Zmax(2)[scale_for_amplitude,0]   FD PHASE        ALL 

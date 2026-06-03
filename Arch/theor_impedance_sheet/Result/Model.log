@@ -1,0 +1,225 @@
+27/Nov/2025 18:43:19  Units settings: 
+                      
+                        Dimensions: mm
+                        Frequency:  GHz
+                        Time:       ns
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:19  Boundary conditions: 
+                      
+                        YZsymmetry: none
+                        XZsymmetry: none
+                        XYsymmetry: none
+                      
+                        Xmin: unit cell
+                        Xmax: unit cell
+                      
+                        Ymin: unit cell
+                        Ymax: unit cell
+                      
+                        Zmin: electric
+                        Zmax: expanded open
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:19  Order settings: 
+                      
+                        Solver order   : 2nd (constant)
+                        Curved elements: up to order 3 (automatic)
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:19    Mesh time                :	2 s
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:19  
+                      ================================================================================
+                      Frequency Domain Solver calculation cycle started
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:19  Solver started at: 06:43 PM Thursday, 27. November 2025 (RTZ 2 (зима))
+                      
+                        Module:  Frequency Domain: S-Parameter (Win 64)
+                        Version: 2022.5 Release from 2022-06-03 (change 981760)
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:19  The low frequency stabilization is not applied to periodic problems.
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:19    Calculation 1 of 1 (Frequency: 5 GHz, Theta: 88.2, Phi: 90)
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:20  Adaptive mesh refinement pass 1
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:20  Performing block excitation with block size 2 and 8 threads.  More...
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:21    Matrix setup time        :	0 s
+                        Degrees of freedom       :	73859
+                        Number of mesh cells     :	11116
+                      
+                        Stimulation port         :	Zmax
+                        Mode number              :	1
+                        Accuracy                 :	3.21133e-05
+                        Iterations               :	5
+                        Solver time              :	1 s
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:21    Stimulation port         :	Zmax
+                        Mode number              :	2
+                        Accuracy                 :	9.85821e-05
+                        Iterations               :	8
+                        Solver time              :	1 s
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:21  *** Warning ***
+                      
+27/Nov/2025 18:43:21  The input reflection seems to be large at 5 GHz, Theta: 88.2, Phi: 90. A constant mesh adaptation sample will not be 
+                      changed.  More...
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:21  84% of all mesh edges seem to be longer than expected. The adaptive mesh refinement's growth limitation will therefore 
+                      use 67540 instead of 11116 mesh cells as a reference.
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:21  Adaptive mesh refinement pass 2
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:23    Matrix setup time        :	1 s
+                        Degrees of freedom       :	128339
+                        Number of mesh cells     :	19481
+                      
+                        Stimulation port         :	Zmax
+                        Mode number              :	1
+                        Accuracy                 :	3.54375e-05
+                        Iterations               :	5
+                        Solver time              :	1 s
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:23    Stimulation port         :	Zmax
+                        Mode number              :	2
+                        Accuracy                 :	4.99517e-05
+                        Iterations               :	10
+                        Solver time              :	1 s
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:23    Delta calculation        
+27/Nov/2025 18:43:23    All S-Parameters         :	0.000116612
+
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:25  Adaptive mesh refinement pass 3
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:28    Matrix setup time        :	1 s
+                        Degrees of freedom       :	220245
+                        Number of mesh cells     :	33525
+                      
+                        Stimulation port         :	Zmax
+                        Mode number              :	1
+                        Accuracy                 :	3.33128e-05
+                        Iterations               :	5
+                        Solver time              :	1 s
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:28    Stimulation port         :	Zmax
+                        Mode number              :	2
+                        Accuracy                 :	8.64985e-05
+                        Iterations               :	9
+                        Solver time              :	2 s
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:28    Delta calculation        
+27/Nov/2025 18:43:28    All S-Parameters         :	8.70682e-05
+
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:31  Adaptive mesh refinement pass 4
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:38    Matrix setup time        :	1 s
+                        Solver setup             :	2 s
+                        Degrees of freedom       :	357895
+                        Number of mesh cells     :	54844
+                      
+                        Stimulation port         :	Zmax
+                        Mode number              :	1
+                        Accuracy                 :	2.91236e-05
+                        Iterations               :	5
+                        Solver time              :	3 s
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:38    Stimulation port         :	Zmax
+                        Mode number              :	2
+                        Accuracy                 :	5.88737e-05
+                        Iterations               :	9
+                        Solver time              :	4 s
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:39    Delta calculation        
+27/Nov/2025 18:43:39    All S-Parameters         :	5.65234e-05
+
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:39  Mesh adaptation terminated because the desired accuracy limit is reached.
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:39  *** Warning ***
+                      
+27/Nov/2025 18:43:39  At least one propagating Floquet mode is not considered at port Zmax. Please increase the number of modes at this port. 
+                      More...
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:39    Total time               :	20 s
+                      
+                      ------------------------------------------------------------------------------
+
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:39  Calculation finished.
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:39    Total Solver Time        :	22 s
+                      ================================================================================
+                      
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:39  Calculating remaining monitors.
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:40    ----------------------------------------------------------------------------
+                                            Peak memory used (kB)         Free physical memory (kB) 
+                                                                          At begin     Minimum      
+                        ----------------------------------------------------------------------------
+                        Solver start        20652                         7109304      7108524      
+                        Eq. system setup    806952                        7126300      6511704      
+                        Eq. system solve    1398128                       7059036      5680424      
+                        Mesh refinement     806952                        6830684      6542092      
+                        Solver run total    1398128                       7109308      5794416      
+                      
+                        Computer name       DESKTOP-HT4PDML
+                        ----------------------------------------------------------------------------
+                      
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:40  Running postprocessing.
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:41  Postprocessing finished.
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:41  Creating parametric 1D results for Run ID 1
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:42  Calculating remaining monitors.
+                      
+                      ------------------------------------------------------------------------------
+27/Nov/2025 18:43:44  Calculating remaining monitors.
+                      
+                      ------------------------------------------------------------------------------

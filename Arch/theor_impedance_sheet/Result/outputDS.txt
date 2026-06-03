@@ -1,0 +1,10 @@
+_______________________________________________________________________________________________________________________
+    Message output from C:\Users\Michael\Desktop\Antenna_new\theor_impedance_sheet
+    Build: 2022.5 Release from 2022-06-03 (change 981760)
+_______________________________________________________________________________________________________________________
+
+_______________________________________________________________________________________________________________________
+QUESTION:
+Macro theor_impedance_sheet:C:\Users\Michael\Desktop\Antenna_new\theor_impedance_sheet\Model\3D\scaning_for_test.mcr has not been saved yet.
+Do you want to save it?
+Auto answered with "Yes"
