@@ -1,7 +1,7 @@
 
 
 import numpy as np
-from scipy.integrate import quad_vec, dblquad
+from scipy.integrate import quad_vec, dblquad #всё пока работает сейчас буду добавлять импедансный экран и нефиксированное расположение источника
 
 MU_0 = 4e-7 * np.pi
 EPS_0 = 8.8541878188e-12
