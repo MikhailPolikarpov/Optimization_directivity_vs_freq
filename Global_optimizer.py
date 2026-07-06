@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from T_method import LayeredStructure
 from My_plotter import Style, Plotter
-from scipy.optimize import differential_evolution
+from scipy.optimize import differential_evolution, NonlinearConstraint
 import json
 import time
 from datetime import timedelta
@@ -42,11 +42,19 @@ class OptimizationParameters:
     bounds_beta: list = field(default_factory=lambda: [(0.1,  3.0)]*5)  # границы для beta
     start_alpha: list = field(default_factory=lambda: [10.0]*5) # начальные значения для alpha
     start_beta: list = field(default_factory=lambda: [1.0]*5) # начальные значения для beta
-
+    mode: str = 'diploma'
+    alpha_l = 1.e16 # индуктивная составляющая проводимости экрана
+    alpha_c = 1.e16 # емкостная составляющая проводимости экрана
+    dipole_shift = np.pi/2 # расстояние между диполем и экраном
+    beta_d = 0.0 # расстояние между двумя диполями в случае, когда источник состоит из двух диполей под 45 градусов
+    bounds_alpha_screen: list = field(default_factory=lambda: [(0,  20.0), (0.0, 20.0)]) # границы для alpha экрана
+    bounds_dipole_shift: list = field(default_factory=lambda: [(0.1, np.pi)]) # границы для dipole_shift
+    bounds_beta_d: list = field(default_factory=lambda: [(0.0,  11.0)]) # границы для beta_d
+    max_summ_beta: float = np.pi
     @property
     def n(self):
         return self._n
-    
+
     @n.setter
     def n(self, value):
         self._n = value
@@ -57,12 +65,18 @@ class OptimizationParameters:
 
     @property
     def bounds(self):
-        return self.bounds_alpha + self.bounds_beta
+        if self.mode == 'diploma':
+            return self.bounds_alpha + self.bounds_beta
+        if self.mode == 'work':
+            return self.bounds_alpha + self.bounds_beta + self.bounds_alpha_screen + self.bounds_dipole_shift + self.bounds_beta_d
     
     @property
     def start_params(self):
-        return self.start_alpha + self.start_beta
-    
+        if self.mode == 'diploma':
+            return self.start_alpha + self.start_beta
+        if self.mode == 'work':
+            return self.start_alpha + self.start_beta + [self.alpha_l, self.alpha_c] + [self.dipole_shift] + [self.beta_d]
+
     @property
     def k(self):
         return np.array([b[1] - b[0] for b in self.bounds])
@@ -115,6 +129,32 @@ class OptimizationParameters:
         target_f = np.sum(self.sigma_penalty(directivity))
         return -target_f  # Для поиска максимума находим минимум отрицательной целевой функции
     
+    def objective_function_two_sources(self, norm_params):
+        n = (len(norm_params) - 4) // 2
+        param = np.array(norm_params)*self.k + self.b
+        alpha = param[:n]
+        beta = param[n:n+n]
+        alpha_l = param[n+n]
+        alpha_c = param[n+n+1]
+        dipole_shift = param[n+n+2]
+        beta_d = param[n+n+3]
+        structure = LayeredStructure(alpha, beta=beta, alpha_l=alpha_l, alpha_c=alpha_c, dipole_shift=dipole_shift)
+        directivity = 10*np.log10(structure.directivity_two_sources_diagonal(self.df_center_segment, beta_d=beta_d, eps=self.eps, limit=self.limit))
+        target_f = np.sum(self.sigma_penalty(directivity))
+        return -target_f  # Для поиска максимума находим минимум отрицательной целевой функции
+    
+    def constraint_sum_beta(self, norm_params):
+        n = (len(norm_params) - 4) // 2
+        param = np.array(norm_params)*self.k + self.b
+        beta = param[n:n+n]
+        return self.max_summ_beta - np.sum(beta)
+    
+    def constraint_dipole_before_first_sheet(self, norm_params):
+        n = (len(norm_params) - 4) // 2
+        param = np.array(norm_params)*self.k + self.b
+        dipole_shift = param[n+n+2]
+        beta = param[n:n+n]
+        return  beta[0] - dipole_shift  # dipole_shift должен быть меньше beta[0]
 
 class StateTracker:
     def __init__(self):
@@ -165,7 +205,7 @@ class DifferentialEvolutionParameters:
 
 class DifferentialEvolutionOptimizer:
 
-    def __init__(self, optp: OptimizationParameters, de_params: DifferentialEvolutionParameters, result_path=None, detailed=False):
+    def __init__(self, optp: OptimizationParameters, de_params: DifferentialEvolutionParameters, result_path=None, detailed=False, mode='diploma'):
         self.optp = optp
         self.de_params = de_params
         if result_path is not None:
@@ -173,13 +213,22 @@ class DifferentialEvolutionOptimizer:
         self.state_tracker = StateTracker()
         self.optimization_data = {}
         self.detailed = detailed
-
+        self.mode = mode
     def optimize(self):
-        objective_func = self.optp.objective_function_single_segment
+        if self.mode == 'diploma':
+            objective_func = self.optp.objective_function_single_segment
+            constraints = None
+        elif self.mode == 'work':
+            objective_func = self.optp.objective_function_two_sources
+            constraint_sum_beta = NonlinearConstraint(self.optp.constraint_sum_beta, 0, np.inf)
+            constraint_dipole_before_first_sheet = NonlinearConstraint(self.optp.constraint_dipole_before_first_sheet, 0, np.inf)
+            constraints = (constraint_sum_beta, constraint_dipole_before_first_sheet)
+        else:
+            raise ValueError("Invalid mode. Choose 'diploma' or 'work'.")
         time_start = time.time()
         res = differential_evolution(
             objective_func,
-            bounds=[(0, 1.0)]*(2*self.optp.n),
+            bounds=[(0, 1.0)]*(len(self.optp.start_params)),
             strategy=self.de_params.strategy,
             popsize=self.de_params.popsize,
             maxiter=self.de_params.maxiter,
@@ -187,7 +236,8 @@ class DifferentialEvolutionOptimizer:
             updating=self.de_params.updating,
             polish=self.de_params.polish,
             seed=self.de_params.seed,
-            callback=self.state_tracker.callback
+            callback=self.state_tracker.callback,
+            constraints=constraints
         )
         best_normalized_params = res.x
         best_params = best_normalized_params*self.optp.k + self.optp.b
@@ -204,7 +254,11 @@ class DifferentialEvolutionOptimizer:
         if self.result_path is not None:
             n = self.optp.n
             best_alpha = list(best_params[:n])
-            best_beta = list(best_params[n:])
+            best_beta = list(best_params[n:n+n])
+            best_alpha_l = best_params[n+n]
+            best_alpha_c = best_params[n+n+1]
+            best_dipole_shift = best_params[n+n+2]
+            best_beta_d = best_params[n+n+3]
             success = res.success
             message = res.message
             best_score = best_score
@@ -212,6 +266,10 @@ class DifferentialEvolutionOptimizer:
             self.optimization_data["N"] = n
             self.optimization_data["best_alpha"] = best_alpha
             self.optimization_data["best_beta"] = best_beta
+            self.optimization_data["best_alpha_l"] = best_alpha_l
+            self.optimization_data["best_alpha_c"] = best_alpha_c
+            self.optimization_data["best_dipole_shift"] = best_dipole_shift
+            self.optimization_data["best_beta_d"] = best_beta_d
             self.optimization_data["best_score"] = best_score
             self.optimization_data["success"] = success
             self.optimization_data["message"] = message

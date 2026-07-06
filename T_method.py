@@ -2,6 +2,7 @@
 
 import numpy as np
 from scipy.integrate import quad_vec, dblquad
+from scipy.special import jv
 
 MU_0 = 4e-7 * np.pi
 EPS_0 = 8.8541878188e-12
@@ -39,7 +40,7 @@ class ImpSheetLayer: # alpha - ETA_0/X_s на основной частоте п
     
 class LayeredStructure:
 
-    def __init__(self, alpha, beta='first_approx', alpha_l = 1.e16, alpha_c = 1.e16, dipole_shift = np.pi/2, d=0): #d - расстояние между диполями
+    def __init__(self, alpha, beta='first_approx', alpha_l = 1.e16, alpha_c = 1.e16, dipole_shift = np.pi/2): #beta_d - расстояние между диполями
         self.N = len(alpha)
         self.alpha = alpha
         self.alpha_l = alpha_l
@@ -86,7 +87,7 @@ class LayeredStructure:
         integral, eps = quad_vec(lambda theta: denom_func(theta)*np.sin(theta), 0, np.pi/2*0.99, epsrel=eps, limit=limit)
         return 4*p_norm/integral # выводит массив directivity для каждой df
     
-    def directivity_two_sources_diagonal(self, df, eps=1e-3, limit=200): # 
+    def directivity_two_sources_diagonal(self, df, eps=1e-3, limit=200, beta_d=0): # направленность для структуры с двумя диполями повёрнутыми на 45 градусов относительно отрезка, соединяющего их
         alpha_l_real = self.alpha_l/(1+df)
         alpha_c_real = self.alpha_c*(1+df)
         alpha_r = (alpha_l_real + alpha_c_real)[None, None, :]
@@ -113,7 +114,8 @@ class LayeredStructure:
             p_TE = (vec_TE[0, :]**2 + vec_TE[1, :]**2)
             p_xi_TM = p_s_TM/p_TM
             p_xi_TE = p_s_TE/p_TE
-            return  np.cos(theta)**2 *p_xi_TM + p_xi_TE
+            beta_d_real = beta_d*(1+df)*np.sin(theta)
+            return  (np.cos(theta)**2 *p_xi_TM + p_xi_TE)*(1 + jv(0, beta_d_real))
         p_norm = denom_func(0)/2
         integral, eps = quad_vec(lambda theta: denom_func(theta)*np.sin(theta), 0, np.pi/2*0.99, epsrel=eps, limit=limit)
         return 4*p_norm/integral # выводит массив directivity для каждой df
