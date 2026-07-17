@@ -138,8 +138,8 @@ class OptimizationParameters:
         alpha_c = param[n+n+1]
         dipole_shift = param[n+n+2]
         beta_d = param[n+n+3]
-        structure = LayeredStructure(alpha, beta=beta, alpha_l=alpha_l, alpha_c=alpha_c, dipole_shift=dipole_shift)
-        directivity = 10*np.log10(structure.directivity_two_sources_diagonal(self.df_center_segment, beta_d=beta_d, eps=self.eps, limit=self.limit))
+        structure = LayeredStructure(alpha, beta=beta, alpha_l=alpha_l, alpha_c=alpha_c, dipole_shift=dipole_shift, beta_d=beta_d)
+        directivity = 10*np.log10(structure.directivity_two_sources_diagonal(self.df_center_segment, eps=self.eps, limit=self.limit))
         target_f = np.sum(self.sigma_penalty(directivity))
         return -target_f  # Для поиска максимума находим минимум отрицательной целевой функции
     
