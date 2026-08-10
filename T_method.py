@@ -2,6 +2,7 @@
 
 import numpy as np
 from scipy.integrate import quad_vec, dblquad
+from scipy.special import jv
 
 MU_0 = 4e-7 * np.pi
 EPS_0 = 8.8541878188e-12
@@ -39,9 +40,13 @@ class ImpSheetLayer: # alpha - ETA_0/X_s на основной частоте п
     
 class LayeredStructure:
 
-    def __init__(self, alpha, beta='first_approx'):
+    def __init__(self, alpha, beta='first_approx', alpha_l = 1.e16, alpha_c = 1.e16, dipole_shift = np.pi/2, beta_d=0): #beta_d - расстояние между диполями
         self.N = len(alpha)
         self.alpha = alpha
+        self.alpha_l = alpha_l
+        self.alpha_c = alpha_c
+        self.dipole_shift = dipole_shift
+        self.beta_d = beta_d
         if type(beta) == str and beta == 'first_approx':
             self.beta = self.first_approx_max_directivity()
         else:
@@ -51,14 +56,22 @@ class LayeredStructure:
             if self.alpha[i] < 0:
                 self.dispersion[i] = 'cap'
 
-    def directivity(self, df, eps=1e-3, limit=200): # df - относительная расстройка (np.array) 
+    def directivity(self, df, eps=1e-3, limit=200): # df - относительная расстройка (np.array)
+        alpha_l_real = self.alpha_l/(1+df)
+        alpha_c_real = self.alpha_c*(1+df)
+        alpha_r = (alpha_l_real + alpha_c_real)[None, None, :]
+        alpha_r_TE = lambda theta: alpha_r/(np.cos(theta)[None, :, None])
+        alpha_r_TM = lambda theta: alpha_r*(np.cos(theta)[None, :, None])
         def denom_func(theta):
             theta = np.array([theta])
-            T_shift = FreeSpaceLayer(np.pi/2, theta, df).Tmatrix()
-            vec_0 = np.array([0,1])[None, None, None, :,None]
-            p_s = ((T_shift@vec_0).transpose(0,1,4,3,2)[0, 0, 0, 0, :])**2
-            vec_TM = np.array([0,1])[None, None, None, :,None]
-            vec_TE = np.array([0,1])[None, None, None, :,None]
+            T_shift = FreeSpaceLayer(self.dipole_shift, theta, df).Tmatrix()
+            vec_0_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_0_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
+            # минус перед второй компонентой из-за того, что вместо обычных векторов (V, I) в моих ABCD-матрицах используются векторы (V, I*ETA/j) вроде правда /j. Если нет, то нужно убрать минус.
+            p_s_TM = ((T_shift@vec_0_TM).transpose(0,1,4,3,2)[0, 0, 0, 0, :])**2
+            p_s_TE = ((T_shift@vec_0_TE).transpose(0,1,4,3,2)[0, 0, 0, 0, :])**2
+            vec_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
             for i in range(self.N):
                 vec_TM = FreeSpaceLayer(self.beta[i], theta, df).Tmatrix()@vec_TM
                 vec_TM = ImpSheetLayer(self.alpha[i], theta, df, 'TM', self.dispersion[i]).Tmatrix()@vec_TM
@@ -68,13 +81,104 @@ class LayeredStructure:
             vec_TE = vec_TE.transpose(0,1,4,3,2)[0, 0, 0, :, :]
             p_TM = (vec_TM[0, :]**2 + vec_TM[1, :]**2)
             p_TE = (vec_TE[0, :]**2 + vec_TE[1, :]**2)
-            p_xi_TM = p_s/p_TM
-            p_xi_TE = p_s/p_TE
+            p_xi_TM = p_s_TM/p_TM
+            p_xi_TE = p_s_TE/p_TE
             return  np.cos(theta)**2 *p_xi_TM + p_xi_TE
         p_norm = denom_func(0)/2
         integral, eps = quad_vec(lambda theta: denom_func(theta)*np.sin(theta), 0, np.pi/2*0.99, epsrel=eps, limit=limit)
         return 4*p_norm/integral # выводит массив directivity для каждой df
     
+    def directivity_two_sources_diagonal(self, df, eps=1e-3, limit=200): # направленность для структуры с двумя диполями повёрнутыми на 45 градусов относительно отрезка, соединяющего их
+        alpha_l_real = self.alpha_l/(1+df)
+        alpha_c_real = self.alpha_c*(1+df)
+        alpha_r = (alpha_l_real + alpha_c_real)[None, None, :]
+        alpha_r_TE = lambda theta: alpha_r/(np.cos(theta)[None, :, None])
+        alpha_r_TM = lambda theta: alpha_r*(np.cos(theta)[None, :, None])
+        def denom_func(theta):
+            theta = np.array([theta])
+            T_shift = FreeSpaceLayer(self.dipole_shift, theta, df).Tmatrix()
+            vec_0_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_0_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
+            # минус перед второй компонентой из-за того, что вместо обычных векторов (V, I) в моих ABCD-матрицах используются векторы (V, I*ETA/j) вроде правда /j. Если нет, то нужно убрать минус.
+            p_s_TM = ((T_shift@vec_0_TM).transpose(0,1,4,3,2)[0, 0, 0, 0, :])**2
+            p_s_TE = ((T_shift@vec_0_TE).transpose(0,1,4,3,2)[0, 0, 0, 0, :])**2
+            vec_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
+            for i in range(self.N):
+                vec_TM = FreeSpaceLayer(self.beta[i], theta, df).Tmatrix()@vec_TM
+                vec_TM = ImpSheetLayer(self.alpha[i], theta, df, 'TM', self.dispersion[i]).Tmatrix()@vec_TM
+                vec_TE = FreeSpaceLayer(self.beta[i], theta, df).Tmatrix()@vec_TE
+                vec_TE = ImpSheetLayer(self.alpha[i], theta, df, 'TE', self.dispersion[i]).Tmatrix()@vec_TE
+            vec_TM = vec_TM.transpose(0,1,4,3,2)[0, 0, 0, :, :]
+            vec_TE = vec_TE.transpose(0,1,4,3,2)[0, 0, 0, :, :]
+            p_TM = (vec_TM[0, :]**2 + vec_TM[1, :]**2)
+            p_TE = (vec_TE[0, :]**2 + vec_TE[1, :]**2)
+            p_xi_TM = p_s_TM/p_TM
+            p_xi_TE = p_s_TE/p_TE
+            beta_d_real = self.beta_d*(1+df)*np.sin(theta)
+            return  (np.cos(theta)**2 *p_xi_TM + p_xi_TE)*(1 + jv(0, beta_d_real))
+        p_norm = denom_func(0)/2
+        integral, eps = quad_vec(lambda theta: denom_func(theta)*np.sin(theta), 0, np.pi/2*0.99, epsrel=eps, limit=limit)
+        return 4*p_norm/integral # выводит массив directivity для каждой df
+    
+    def radiation_pattern_two_sources_diagonal(self, phi, theta, df, mode='raw'):
+        #для бродкастинга с объектами слоёв нужно чтобы формат alpha был [phi, theta, df]
+        alpha_l_real = self.alpha_l/(1+df)
+        alpha_c_real = self.alpha_c*(1+df)
+        alpha_r = (alpha_l_real + alpha_c_real)[None, None, :]
+        alpha_r_TE = alpha_r/np.cos(theta[None, :, None])
+        alpha_r_TM = alpha_r*np.cos(theta[None, :, None])
+
+        T_shift = FreeSpaceLayer(self.dipole_shift, theta, df).Tmatrix()
+        #print("T_shift:", T_shift[0, :5, 0, :, :])
+        vec_0_TM = np.array([[1/np.sqrt(alpha_r_TM**2+1),alpha_r_TM/np.sqrt(alpha_r_TM**2+1)]]).transpose(2,3,4,1,0)
+        vec_0_TE = np.array([[1/np.sqrt(alpha_r_TE**2+1),alpha_r_TE/np.sqrt(alpha_r_TE**2+1)]]).transpose(2,3,4,1,0)
+        #print("vec_0_TM:", vec_0_TM[0, 100:105, 0, :, :])
+
+        p_s_TM = ((T_shift@vec_0_TM).transpose(4,3,0,1,2)[0, 0, :, :, :])**2
+        p_s_TE = ((T_shift@vec_0_TE).transpose(4,3,0,1,2)[0, 0, :, :, :])**2
+        #print("p_s_TM:", p_s_TM[:,100:105,:])
+        #print("p_s_TE:", p_s_TE[:,100:105,:])
+
+        vec_TM = vec_0_TM.copy()
+        vec_TE = vec_0_TE.copy()
+
+        for i in range(self.N):
+            vec_TM = FreeSpaceLayer(self.beta[i], theta, df).Tmatrix()@vec_TM
+            vec_TM = ImpSheetLayer(self.alpha[i], theta, df, 'TM', self.dispersion[i]).Tmatrix()@vec_TM
+            vec_TE = FreeSpaceLayer(self.beta[i], theta, df).Tmatrix()@vec_TE
+            vec_TE = ImpSheetLayer(self.alpha[i], theta, df, 'TE', self.dispersion[i]).Tmatrix()@vec_TE
+        vec_TM = vec_TM.transpose(4,3,0,1,2)[0, :, :, :, :]
+        vec_TE = vec_TE.transpose(4,3,0,1,2)[0, :, :, :, :]
+        p_TM = (vec_TM[0]**2 + vec_TM[1]**2)
+        p_TE = (vec_TE[0]**2 + vec_TE[1]**2)
+        #print("p_TM:", p_TM[:,100:105,:])
+        #print("p_TE:", p_TE[:,100:105,:])
+        p_xi_TM = p_s_TM/p_TM
+        #print("p_xi_TM:", p_xi_TM[:,100:105,:])
+        p_xi_TE = p_s_TE/p_TE
+        #print("p_xi_TE:", p_xi_TE[:,100:105,:])
+
+        phi = phi[:, None, None]
+        theta = theta[None, :, None]
+        df = df[None, None, :]
+        beta_d_real = self.beta_d*(1+df)*np.sin(theta)
+        #print("beta_d_real", beta_d_real[0, 100:105, 0])
+        radiation_pattern_raw = ((p_xi_TM*np.cos(theta)**2*np.cos(phi)**2 + p_xi_TE*np.sin(phi)**2)*(1 + np.cos(beta_d_real/np.sqrt(2)*(np.cos(phi)+np.sin(phi))))).transpose(2,0,1)
+        df = df[0, 0, :]
+        if mode == 'raw':
+            return radiation_pattern_raw  # формат вывода: [df][phi][theta] 
+        if mode == 'normalized':
+            p_norm = self.radiation_pattern_two_sources_diagonal(np.array([0]), np.array([0]), df, mode='raw')
+            return radiation_pattern_raw/p_norm  # формат вывода: [df][phi][theta]
+        directivity = self.directivity_two_sources_diagonal(df)
+        if mode == 'absolute':
+            phi = phi[:, 0, 0]
+            theta = theta[0, :, 0]
+            return self.radiation_pattern_two_sources_diagonal(phi, theta, df, mode='normalized')*directivity[:, None, None]  # формат вывода: [df][phi][theta]
+
+
+
     def directivity_naive(self, df, eps=1e-3, limit=200): # df - относительная расстройка (np.array) 
         def denom_func(theta):
             theta = np.array([theta])
@@ -117,6 +221,7 @@ class LayeredStructure:
             p_TE = (vec_TE[0]**2 + vec_TE[1]**2)
             p_xi_TM = p_s/p_TM
             p_xi_TE = p_s/p_TE
+            #а здесь диполь ориентирован вдоль оси y почему то...
             return  (np.cos(theta)**2 *p_xi_TM * np.sin(phi)**2 + p_xi_TE * np.cos(phi)**2)*np.abs(1+np.e**(2.j*np.pi*np.sin(theta)*np.sin(phi)))**2
         integral = []
         p_norm_arr = []
@@ -154,6 +259,7 @@ class LayeredStructure:
             e_xi_TM = np.sqrt(p_s/p_TM)
             e_xi_TE = np.sqrt(p_s/p_TE)
             phi = phi[None, :, None]
+            #диполь ориентирован вдоль оси x
             p = (np.cos(theta)**2*np.cos(phi)**2*e_xi_TM**2 + np.sin(phi)**2*e_xi_TE**2)
             return p
         p_total = p_on_direction_array(phi, theta, df)/p_on_direction_array(np.array([0]), np.array([0]), df)
