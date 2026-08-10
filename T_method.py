@@ -65,13 +65,13 @@ class LayeredStructure:
         def denom_func(theta):
             theta = np.array([theta])
             T_shift = FreeSpaceLayer(self.dipole_shift, theta, df).Tmatrix()
-            vec_0_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),-alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
-            vec_0_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),-alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_0_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_0_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
             # минус перед второй компонентой из-за того, что вместо обычных векторов (V, I) в моих ABCD-матрицах используются векторы (V, I*ETA/j) вроде правда /j. Если нет, то нужно убрать минус.
             p_s_TM = ((T_shift@vec_0_TM).transpose(0,1,4,3,2)[0, 0, 0, 0, :])**2
             p_s_TE = ((T_shift@vec_0_TE).transpose(0,1,4,3,2)[0, 0, 0, 0, :])**2
-            vec_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),-alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
-            vec_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),-alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
             for i in range(self.N):
                 vec_TM = FreeSpaceLayer(self.beta[i], theta, df).Tmatrix()@vec_TM
                 vec_TM = ImpSheetLayer(self.alpha[i], theta, df, 'TM', self.dispersion[i]).Tmatrix()@vec_TM
@@ -97,13 +97,13 @@ class LayeredStructure:
         def denom_func(theta):
             theta = np.array([theta])
             T_shift = FreeSpaceLayer(self.dipole_shift, theta, df).Tmatrix()
-            vec_0_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),-alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
-            vec_0_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),-alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_0_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_0_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
             # минус перед второй компонентой из-за того, что вместо обычных векторов (V, I) в моих ABCD-матрицах используются векторы (V, I*ETA/j) вроде правда /j. Если нет, то нужно убрать минус.
             p_s_TM = ((T_shift@vec_0_TM).transpose(0,1,4,3,2)[0, 0, 0, 0, :])**2
             p_s_TE = ((T_shift@vec_0_TE).transpose(0,1,4,3,2)[0, 0, 0, 0, :])**2
-            vec_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),-alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
-            vec_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),-alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
+            vec_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
             for i in range(self.N):
                 vec_TM = FreeSpaceLayer(self.beta[i], theta, df).Tmatrix()@vec_TM
                 vec_TM = ImpSheetLayer(self.alpha[i], theta, df, 'TM', self.dispersion[i]).Tmatrix()@vec_TM
@@ -121,36 +121,61 @@ class LayeredStructure:
         integral, eps = quad_vec(lambda theta: denom_func(theta)*np.sin(theta), 0, np.pi/2*0.99, epsrel=eps, limit=limit)
         return 4*p_norm/integral # выводит массив directivity для каждой df
     
-    def radiation_pattern_two_sources_diagonal(self, phi, theta, df, mode='normalized'): 
-
+    def radiation_pattern_two_sources_diagonal(self, phi, theta, df, mode='raw'):
+        #для бродкастинга с объектами слоёв нужно чтобы формат alpha был [phi, theta, df]
         alpha_l_real = self.alpha_l/(1+df)
         alpha_c_real = self.alpha_c*(1+df)
         alpha_r = (alpha_l_real + alpha_c_real)[None, None, :]
-        alpha_r_TE = lambda theta: alpha_r/(np.cos(theta)[None, :, None])
-        alpha_r_TM = lambda theta: alpha_r*(np.cos(theta)[None, :, None])
+        alpha_r_TE = alpha_r/np.cos(theta[None, :, None])
+        alpha_r_TM = alpha_r*np.cos(theta[None, :, None])
 
         T_shift = FreeSpaceLayer(self.dipole_shift, theta, df).Tmatrix()
-        vec_0_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),-alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
-        vec_0_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),-alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
+        #print("T_shift:", T_shift[0, :5, 0, :, :])
+        vec_0_TM = np.array([[1/np.sqrt(alpha_r_TM**2+1),alpha_r_TM/np.sqrt(alpha_r_TM**2+1)]]).transpose(2,3,4,1,0)
+        vec_0_TE = np.array([[1/np.sqrt(alpha_r_TE**2+1),alpha_r_TE/np.sqrt(alpha_r_TE**2+1)]]).transpose(2,3,4,1,0)
+        #print("vec_0_TM:", vec_0_TM[0, 100:105, 0, :, :])
 
-        p_s_TM = ((T_shift@vec_0_TM).transpose(0,1,4,3,2)[0, 0, 0, 0, :])**2
-        p_s_TE = ((T_shift@vec_0_TE).transpose(0,1,4,3,2)[0, 0, 0, 0, :])**2
-        vec_TM = np.array([[1/np.sqrt(alpha_r_TM(theta)**2+1),-alpha_r_TM(theta)/np.sqrt(alpha_r_TM(theta)**2+1)]]).transpose(2,3,4,1,0)
-        vec_TE = np.array([[1/np.sqrt(alpha_r_TE(theta)**2+1),-alpha_r_TE(theta)/np.sqrt(alpha_r_TE(theta)**2+1)]]).transpose(2,3,4,1,0)
+        p_s_TM = ((T_shift@vec_0_TM).transpose(4,3,0,1,2)[0, 0, :, :, :])**2
+        p_s_TE = ((T_shift@vec_0_TE).transpose(4,3,0,1,2)[0, 0, :, :, :])**2
+        #print("p_s_TM:", p_s_TM[:,100:105,:])
+        #print("p_s_TE:", p_s_TE[:,100:105,:])
+
+        vec_TM = vec_0_TM.copy()
+        vec_TE = vec_0_TE.copy()
 
         for i in range(self.N):
             vec_TM = FreeSpaceLayer(self.beta[i], theta, df).Tmatrix()@vec_TM
             vec_TM = ImpSheetLayer(self.alpha[i], theta, df, 'TM', self.dispersion[i]).Tmatrix()@vec_TM
             vec_TE = FreeSpaceLayer(self.beta[i], theta, df).Tmatrix()@vec_TE
             vec_TE = ImpSheetLayer(self.alpha[i], theta, df, 'TE', self.dispersion[i]).Tmatrix()@vec_TE
-        vec_TM = vec_TM.transpose(0,1,4,3,2)[0, 0, 0, :, :]
-        vec_TE = vec_TE.transpose(0,1,4,3,2)[0, 0, 0, :, :]
-        p_TM = (vec_TM[0, :]**2 + vec_TM[1, :]**2)
-        p_TE = (vec_TE[0, :]**2 + vec_TE[1, :]**2)
+        vec_TM = vec_TM.transpose(4,3,0,1,2)[0, :, :, :, :]
+        vec_TE = vec_TE.transpose(4,3,0,1,2)[0, :, :, :, :]
+        p_TM = (vec_TM[0]**2 + vec_TM[1]**2)
+        p_TE = (vec_TE[0]**2 + vec_TE[1]**2)
+        #print("p_TM:", p_TM[:,100:105,:])
+        #print("p_TE:", p_TE[:,100:105,:])
         p_xi_TM = p_s_TM/p_TM
+        #print("p_xi_TM:", p_xi_TM[:,100:105,:])
         p_xi_TE = p_s_TE/p_TE
+        #print("p_xi_TE:", p_xi_TE[:,100:105,:])
+
+        phi = phi[:, None, None]
+        theta = theta[None, :, None]
+        df = df[None, None, :]
         beta_d_real = self.beta_d*(1+df)*np.sin(theta)
-        return  (p_xi_TM*np.cos(theta)**2*np.cos(phi)**2 + p_xi_TE*np.sin(phi)**2)*(1 + np.cos(beta_d_real/np.sqrt(2)*(np.cos(phi)+np.sin(phi)))) # формат вывода: [df][phi][theta] 
+        #print("beta_d_real", beta_d_real[0, 100:105, 0])
+        radiation_pattern_raw = ((p_xi_TM*np.cos(theta)**2*np.cos(phi)**2 + p_xi_TE*np.sin(phi)**2)*(1 + np.cos(beta_d_real/np.sqrt(2)*(np.cos(phi)+np.sin(phi))))).transpose(2,0,1)
+        df = df[0, 0, :]
+        if mode == 'raw':
+            return radiation_pattern_raw  # формат вывода: [df][phi][theta] 
+        if mode == 'normalized':
+            p_norm = self.radiation_pattern_two_sources_diagonal(np.array([0]), np.array([0]), df, mode='raw')
+            return radiation_pattern_raw/p_norm  # формат вывода: [df][phi][theta]
+        directivity = self.directivity_two_sources_diagonal(df)
+        if mode == 'absolute':
+            phi = phi[:, 0, 0]
+            theta = theta[0, :, 0]
+            return self.radiation_pattern_two_sources_diagonal(phi, theta, df, mode='normalized')*directivity[:, None, None]  # формат вывода: [df][phi][theta]
 
 
 

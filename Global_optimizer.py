@@ -33,6 +33,7 @@ class OptimizationParameters:
     _n: int = 5 # кол-во слоев
     segment_width_percent: float = 25.0 # целевая ширина по df в процентах
     segment_points: int = 35 # кол-во точек в целевом сегменте
+    segment_shift_percent: int = 0 # сдвиг целевого сегмента по частоте
     sigma_thres: float = 18.0 # целевая КНД в дБ
     sigma_k: float = 3.0 # крутизна функции штрафа и сигмоиды
     penalty_c: float = 0.1 # коэффициент штрафа
@@ -87,7 +88,7 @@ class OptimizationParameters:
     
     @property
     def df_center_segment(self):
-        return np.linspace(-self.segment_width_percent/200, self.segment_width_percent/200, self.segment_points)
+        return np.linspace(-(self.segment_width_percent-self.segment_shift_percent)/200, (self.segment_width_percent+self.segment_shift_percent)/200, self.segment_points)
 
     @property
     def sigma_penalty(self):
