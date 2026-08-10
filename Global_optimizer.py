@@ -288,8 +288,8 @@ class DifferentialEvolutionOptimizer:
             self.optimization_data["de_workers"] = self.de_params.workers
             self.optimization_data["de_updating"] = self.de_params.updating
             self.optimization_data["de_seed"] = self.de_params.seed
-            self.optimization_data["convergence_history"] = self.state_tracker.convergence_history  
             if self.detailed:
+                self.optimization_data["convergence_history"] = self.state_tracker.convergence_history  
                 self.optimization_data["alpha_history"] = self.state_tracker.alpha_history
                 self.optimization_data["beta_history"] = self.state_tracker.beta_history
                 self.optimization_data["target_f_history"] = self.state_tracker.target_f_history

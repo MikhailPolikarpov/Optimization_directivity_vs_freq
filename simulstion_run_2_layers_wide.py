@@ -38,5 +38,6 @@ for seed in seeds:
     for i1 in bounds_items:
         for i2 in bounds_items:
             mode_str = i1[0] + i2[0]
-            bounds = i1[1] + i2[1]
+            bounds_alpha = i1[1] + i2[1]
             result_path = f"results/2_sheets_l_{l}/{mode_str}_seed_{seed}.json"
+            run_optimization(bounds_alpha, bounds_beta, max_summ_beta, seed, result_path)
