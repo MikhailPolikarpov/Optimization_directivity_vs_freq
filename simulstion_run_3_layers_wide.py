@@ -22,7 +22,7 @@ def run_optimization(bounds_alpha, bounds_beta, max_summ_beta, seed, result_path
         optp.segment_shift_percent = -5
         optp.max_summ_beta = max_summ_beta
         de_p = glo.DifferentialEvolutionParameters()
-        de_p.maxiter = 200
+        de_p.maxiter = 400
         de_p.popsize = 16
         de_p.seed = seed
         optimizer = glo.DifferentialEvolutionOptimizer(optp, de_p, result_path=result_path, detailed=False, mode='work')
