@@ -1,0 +1,40 @@
+{
+    "N": 1,
+    "best_alpha": [
+        2.4064676501502924
+    ],
+    "best_beta": [
+        2.5904426319157885
+    ],
+    "best_alpha_l": 0.06065228779110199,
+    "best_alpha_c": -19.799155906834596,
+    "best_dipole_shift": 0.4158170782242903,
+    "best_beta_d": 8.997231302995718,
+    "best_score": 23.155902969372665,
+    "success": true,
+    "message": "Optimization terminated successfully.",
+    "simulation_time": "0:02:10",
+    "segment_width_percent": 30,
+    "segment_points": 35,
+    "sigma_thres": 15.5,
+    "sigma_k": 3.0,
+    "penalty_c": 0.0,
+    "bounds_alpha": [
+        [
+            0,
+            20.0
+        ]
+    ],
+    "bounds_beta": [
+        [
+            0.2,
+            3.2
+        ]
+    ],
+    "de_strategy": "best1bin",
+    "de_maxiter": 200,
+    "de_popsize": 50,
+    "de_workers": -1,
+    "de_updating": "deferred",
+    "de_seed": 90
+}
